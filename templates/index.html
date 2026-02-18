@@ -2,21 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>CI/CD Pipeline</title>
+    <title>DevOps CI/CD Dashboard</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
   </head>
   <body>
-    <div class="container">
-      <h1>🚀 CI/CD Pipeline Successful</h1>
-      <p>
-        Your DevOps CI/CD pipeline using Jenkins & Docker is working perfectly.
-      </p>
+    <div class="card">
+      <h1>🚀 CI/CD Deployment Successful</h1>
+      <p class="subtitle">DevOps Practice Application</p>
 
-      <div class="info-box">
-        <p><strong>Tools Used:</strong></p>
+      <div class="details">
+        <p><strong>Status:</strong> Running</p>
+        <p><strong>Hostname:</strong> {{ hostname }}</p>
+        <p><strong>Last Deployed:</strong> {{ time }}</p>
+      </div>
+
+      <div class="tools">
+        <h3>Tools Used</h3>
         <ul>
           <li>AWS EC2</li>
           <li>Jenkins (Declarative Pipeline)</li>
@@ -26,7 +30,7 @@
       </div>
 
       <footer>
-        <p>Deployed Automatically via Jenkins CI/CD</p>
+        <p>Automated Deployment via CI/CD Pipeline</p>
       </footer>
     </div>
   </body>
