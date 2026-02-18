@@ -2,9 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = milanviradiya97
-        DOCKER_PASS = Milan@123
-        DOCKER_IMAGE = "milanpateldevops/flask-ci-cd"
+        DOCKER_IMAGE = "milanviradiya97/flask-ci-cd"
         DOCKER_TAG = "latest"
     }
 
