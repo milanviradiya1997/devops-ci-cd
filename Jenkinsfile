@@ -2,22 +2,21 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "milanviradiya97/flask-ci-cd"
-        DOCKER_TAG = "latest"
+        IMAGE_NAME = "milanviradiya97/devops-dashboard"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
 
-        stage('Clone Code') {
+        stage('Checkout Code') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/milanviradiya1997/devops-ci-cd.git'
+                checkout scm
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
             }
         }
 
@@ -33,29 +32,19 @@ pipeline {
             }
         }
 
-        stage('Push Image to Docker Hub') {
+        stage('Push Image') {
             steps {
-                sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
+                sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
             }
         }
 
-        stage('Deploy Container') {
+        stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                docker stop flask-app || true
-                docker rm flask-app || true
-                docker run -d -p 80:5000 --name flask-app $DOCKER_IMAGE:$DOCKER_TAG
+                  sed -i "s/IMAGE_TAG/${BUILD_NUMBER}/g" k8s/deployment.yaml
+                  kubectl apply -f k8s/
                 '''
             }
-        }
-    }
-
-    post {
-        success {
-            echo "CI/CD Pipeline Completed Successfully 🚀"
-        }
-        failure {
-            echo "Pipeline Failed ❌"
         }
     }
 }
